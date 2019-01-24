@@ -16,9 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os, platform
+import sys, os, platform, gi
 
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+gi.require_version('Vte', '2.91')
 from gi.repository import Vte
 from gi.repository import GLib
 
@@ -66,14 +68,14 @@ class XaoSActivity(activity.Activity):
         vt.show()
 
         if platform.machine().startswith('arm'):
-                vt.feed_child("cd $SUGAR_BUNDLE_PATH/arm\n", -1)
+                vt.feed_child("cd $SUGAR_BUNDLE_PATH/arm\n")
         else:
             if platform.architecture()[0] == '64bit':
-                vt.feed_child("cd $SUGAR_BUNDLE_PATH/64bits\n", -1)
+                vt.feed_child("cd $SUGAR_BUNDLE_PATH/64bits\n")
             else:
-                vt.feed_child("cd $SUGAR_BUNDLE_PATH/32bits\n", -1)
-        vt.feed_child("export LD_LIBRARY_PATH=`pwd`/lib:$LD_LIBRARY_PATH\n", -1)
-        vt.feed_child("bin/xaos -fullscreen; exit\n", -1)
+                vt.feed_child("cd $SUGAR_BUNDLE_PATH/32bits\n")
+        vt.feed_child("export LD_LIBRARY_PATH=`pwd`/lib:$LD_LIBRARY_PATH\n")
+        vt.feed_child("bin/xaos -fullscreen; exit\n")
 
     def exit(self, vt, data):
         self.close()
